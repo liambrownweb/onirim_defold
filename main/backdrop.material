@@ -1,0 +1,4 @@
+name: "unnamed"
+vertex_program: "/builtins/materials/sprite.vp"
+fragment_program: "/builtins/materials/particlefx.fp"
+vertex_space: VERTEX_SPACE_WORLD

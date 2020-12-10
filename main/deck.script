@@ -1,0 +1,73 @@
+require("/main/globals")
+go.property("card_count", true)
+function init(self)
+	self.cards = {}
+	self.symbols = {SUN, MOON, KEY, DOOR}
+	self.suites = {OBSERVATORY, AQUARIUM, GARDEN, LIBRARY}
+	self.counts = {
+		[SUN] = {[OBSERVATORY] = 9, [AQUARIUM] = 8, [GARDEN] = 7, [LIBRARY] = 6}, 
+		[MOON] = {[OBSERVATORY] = 4, [AQUARIUM] = 4, [GARDEN] = 4, [LIBRARY] = 4}, 
+		[KEY] = {[OBSERVATORY] = 3, [AQUARIUM] = 3, [GARDEN] = 3, [LIBRARY] = 3}, 
+		[NIGHTMARE] = 10, 
+		[DOOR] = {[OBSERVATORY] = 2, [AQUARIUM] = 2, [GARDEN] = 2, [LIBRARY] = 2}
+	}
+	initDeck(self)
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	if (message_id == actions.DRAW) then
+		card = table.remove(self.cards, 1)
+		msg.post("onirim#main", "drawn card", card)
+	end
+end
+
+function initDeck(self)
+	for key, symbol in pairs(self.symbols) do
+		for key2, suite in pairs(self.suites) do
+			for i = 1, self.counts[symbol][suite], 1 do
+				table.insert(self.cards, {SUITE = suite, SYMBOL = symbol})
+			end
+		end
+	end
+	for i = 1, self.counts[NIGHTMARE], 1 do
+		table.insert(self.cards, {SUITE = NIGHTMARE, SYMBOL = nil})
+	end
+	shuffleDeck(self)
+end
+
+function shuffleDeck(self)
+	for i = #self.cards, 2, -1 do
+		local j = math.random(i)
+		self.cards[i], self.cards[j] = self.cards[j], self.cards[i]
+	end
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here. The game object this script is attached to
+	-- must have acquired input focus:
+	--
+	--    msg.post(".", "acquire_input_focus")
+	--
+	-- All mapped input bindings will be received. Mouse and touch input will
+	-- be received regardless of where on the screen it happened.
+	-- Learn more: https://defold.com/manuals/input/
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end

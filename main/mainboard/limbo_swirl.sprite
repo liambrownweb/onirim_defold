@@ -1,0 +1,4 @@
+tile_set: "/main/mainboard/limbo_swirl.atlas"
+default_animation: "swirl"
+material: "/builtins/materials/sprite.material"
+blend_mode: BLEND_MODE_ALPHA

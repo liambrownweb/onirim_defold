@@ -1,0 +1,4 @@
+tile_set: "/main/card/backs/all_suites.atlas"
+default_animation: "suite_observatory"
+material: "/builtins/materials/sprite.material"
+blend_mode: BLEND_MODE_ALPHA

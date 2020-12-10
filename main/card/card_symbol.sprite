@@ -1,0 +1,4 @@
+tile_set: "/main/card/card_symbol.atlas"
+default_animation: "sun"
+material: "/builtins/materials/sprite.material"
+blend_mode: BLEND_MODE_ALPHA

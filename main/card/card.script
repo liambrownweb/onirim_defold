@@ -1,0 +1,49 @@
+require("/main/globals")
+go.property("symbol", hash("symbol"))
+go.property("suite", hash("suite"))
+
+local suites = {
+	[AQUARIUM] = "suite_aquarium",
+	[OBSERVATORY] = "suite_observatory",
+	[LIBRARY] = "suite_library",
+	[GARDEN] = "suite_garden",
+	[NIGHTMARE] = "nightmare",
+}
+
+local doors = {
+	[AQUARIUM] = "door_blue",
+	[GARDEN] = "door_green",
+	[OBSERVATORY] = "door_red",
+	[LIBRARY] = "door_yellow",
+}
+
+local symbols = {
+	[KEY] = "key",
+	[SUN] = "sun",
+	[MOON] = "moon",
+}
+
+function init(self)
+	go.set("#card_suite", "scale", vmath.vector3(1.35, 1.47, 1))
+	suite = (self.symbol == DOOR) and doors[self.suite] or suites[self.suite]
+	msg.post("#card_suite", "play_animation", {id = hash(suite)})
+	symbol = symbols[self.symbol]
+	if (symbol) then msg.post("#card_symbol", "play_animation", {id = hash(symbol)}) end
+end
+
+function final(self)
+end
+
+function update(self, dt)
+	-- Nothing here
+end
+
+function on_message(self, message_id, message, sender)
+end
+
+function on_input(self, action_id, action)
+	print("Hello")
+end
+
+function on_reload(self)
+end
