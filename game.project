@@ -2,6 +2,7 @@
 title = Onirim
 version = 0
 publisher = Me
+dependencies = https://github.com/britzl/defold-input/archive/master.zip,https://github.com/subsoap/defos/archive/master.zip
 
 [bootstrap]
 main_collection = /main/main.collectionc
@@ -12,7 +13,7 @@ use_accelerometer = 0
 
 [display]
 width = 1280
-height = 720
+height = 960
 update_frequency = 72
 
 [script]

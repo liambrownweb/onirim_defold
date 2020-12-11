@@ -1,6 +1,6 @@
 components {
-  id: "card_back"
-  component: "/main/card/card.sprite"
+  id: "cursor"
+  component: "/in/cursor.script"
   position {
     x: 0.0
     y: 0.0
@@ -12,40 +12,15 @@ components {
     z: 0.0
     w: 1.0
   }
-}
-components {
-  id: "card_suite"
-  component: "/main/card/card_back.sprite"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.5
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
+  properties {
+    id: "acquire_input_focus"
+    value: "true"
+    type: PROPERTY_TYPE_BOOLEAN
   }
 }
 components {
-  id: "card_symbol"
-  component: "/main/card/card_symbol.sprite"
-  position {
-    x: -240.0
-    y: 480.0
-    z: 2.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-components {
-  id: "card"
-  component: "/main/card/card.script"
+  id: "mouse_cursor"
+  component: "/main/mouse_cursor.script"
   position {
     x: 0.0
     y: 0.0
@@ -59,22 +34,38 @@ components {
   }
 }
 embedded_components {
+  id: "sprite"
+  type: "sprite"
+  data: "tile_set: \"/main/cursor.atlas\"\n"
+  "default_animation: \"default_cursor\"\n"
+  "material: \"/builtins/materials/sprite.material\"\n"
+  "blend_mode: BLEND_MODE_ALPHA\n"
+  ""
+  position {
+    x: 15.0
+    y: -15.0
+    z: 12.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+embedded_components {
   id: "collisionobject"
   type: "collisionobject"
   data: "collision_shape: \"\"\n"
-  "type: COLLISION_OBJECT_TYPE_TRIGGER\n"
+  "type: COLLISION_OBJECT_TYPE_KINEMATIC\n"
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
-  "group: \"cards\"\n"
-  "mask: \"pointer\"\n"
-  "mask: \"labyrinth\"\n"
-  "mask: \"discard\"\n"
-  "mask: \"unlock\"\n"
-  "mask: \"limbo\"\n"
+  "group: \"pointer\"\n"
+  "mask: \"cards\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
-  "    shape_type: TYPE_BOX\n"
+  "    shape_type: TYPE_SPHERE\n"
   "    position {\n"
   "      x: 0.0\n"
   "      y: 0.0\n"
@@ -87,11 +78,9 @@ embedded_components {
   "      w: 1.0\n"
   "    }\n"
   "    index: 0\n"
-  "    count: 3\n"
+  "    count: 1\n"
   "  }\n"
-  "  data: 550.0\n"
-  "  data: 785.0\n"
-  "  data: 10.0\n"
+  "  data: 2.5\n"
   "}\n"
   "linear_damping: 0.0\n"
   "angular_damping: 0.0\n"

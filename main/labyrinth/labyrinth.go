@@ -1,51 +1,6 @@
 components {
-  id: "card_back"
-  component: "/main/card/card.sprite"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-components {
-  id: "card_suite"
-  component: "/main/card/card_back.sprite"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.5
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-components {
-  id: "card_symbol"
-  component: "/main/card/card_symbol.sprite"
-  position {
-    x: -240.0
-    y: 480.0
-    z: 2.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-components {
-  id: "card"
-  component: "/main/card/card.script"
+  id: "labyrinth"
+  component: "/main/labyrinth/labyrinth.script"
   position {
     x: 0.0
     y: 0.0
@@ -59,19 +14,35 @@ components {
   }
 }
 embedded_components {
-  id: "collisionobject"
+  id: "sprite"
+  type: "sprite"
+  data: "tile_set: \"/main/labyrinth/labyrinth.atlas\"\n"
+  "default_animation: \"labyrinth_backdrop\"\n"
+  "material: \"/builtins/materials/sprite.material\"\n"
+  "blend_mode: BLEND_MODE_ALPHA\n"
+  ""
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+embedded_components {
+  id: "labyrinth_boundary"
   type: "collisionobject"
   data: "collision_shape: \"\"\n"
   "type: COLLISION_OBJECT_TYPE_TRIGGER\n"
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
-  "group: \"cards\"\n"
-  "mask: \"pointer\"\n"
-  "mask: \"labyrinth\"\n"
-  "mask: \"discard\"\n"
-  "mask: \"unlock\"\n"
-  "mask: \"limbo\"\n"
+  "group: \"labyrinth\"\n"
+  "mask: \"cards\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_BOX\n"
@@ -89,8 +60,8 @@ embedded_components {
   "    index: 0\n"
   "    count: 3\n"
   "  }\n"
-  "  data: 550.0\n"
-  "  data: 785.0\n"
+  "  data: 960.0\n"
+  "  data: 600.0\n"
   "  data: 10.0\n"
   "}\n"
   "linear_damping: 0.0\n"

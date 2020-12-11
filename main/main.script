@@ -1,14 +1,28 @@
 require("/main/globals")
 
 function init(self)
+	self.cards = 0
+	defos.set_cursor_visible(false)
+	self.cursor_is_visible = false
+	defos.on_mouse_leave(function ()
+		defos.set_cursor_visible(true)
+		self.cursor_is_visible = true
+	end)
 	self.center_point = vmath.vector3(400, 200, 0)
 	self.default_card_scale = 0.15
 	msg.post(".", "acquire_input_focus")
-	msg.post("@render:", "use_fixed_fit_projection", { near = -1, far = 1 })
+	msg.post("@render:", "use_camera_projection") --Perspective camera
+	--msg.post("@render:", "use_fixed_fit_projection", { near = -100, far = 100 }) --2D ortho viewport
+	msg.post("/camera#main_board_camera", "acquire_camera_focus")
 end
 
 function on_input(self, action_id, action)
-	if action_id == hash("touch") and action.pressed then
+	if(defos.is_mouse_in_view() and self.cursor_is_visible) then
+		defos.set_cursor_visible(false)
+		self.cursor_is_visible = false
+	end
+	if action_id == hash("touch") and action.pressed and self.cards < 10 then
+		self.cards = self.cards + 1
 		msg.post("deck#deck", "draw")
 	end
 end
@@ -17,6 +31,9 @@ function on_message(self, message_id, message)
 	if (message_id == actions.DRAW_RESULT) then
 		local props = {symbol = message.SYMBOL, suite = message.SUITE}
 		card = factory.create("/onirim#card_factory", self.center_point, nil, props, self.default_card_scale)
+		card_pos = go.get_position(card)
+		card_pos = card_pos + vmath.vector3(0,0,3)
+		go.set_position(card_pos, card)
 		msg.post(card, "ident")
 	end
 end

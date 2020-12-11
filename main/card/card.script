@@ -25,6 +25,7 @@ local symbols = {
 
 function init(self)
 	go.set("#card_suite", "scale", vmath.vector3(1.35, 1.47, 1))
+	go.set("#card_symbol", "scale", vmath.vector3(0.7, 0.7, 1))
 	suite = (self.symbol == DOOR) and doors[self.suite] or suites[self.suite]
 	msg.post("#card_suite", "play_animation", {id = hash(suite)})
 	symbol = symbols[self.symbol]
@@ -39,10 +40,12 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
+	if not (message_id == hash("collision_response")) then
+		-- print(message_id, message	)
+	end
 end
 
 function on_input(self, action_id, action)
-	print("Hello")
 end
 
 function on_reload(self)
