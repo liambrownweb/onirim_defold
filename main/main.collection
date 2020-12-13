@@ -1,7 +1,7 @@
 name: "main"
 instances {
   id: "deck"
-  prototype: "/main/deck.go"
+  prototype: "/main/deck/deck.go"
   position {
     x: 0.0
     y: 0.0
@@ -59,11 +59,53 @@ instances {
     z: 1.0
   }
 }
+instances {
+  id: "limbo"
+  prototype: "/main/limbo/limbo.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "discard"
+  prototype: "/main/discard/discard.go"
+  position {
+    x: 86.0
+    y: -170.0
+    z: -100.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 0.5
+    y: 0.5
+    z: 1.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "onirim"
   children: "camera"
+  children: "discard"
   children: "labyrinth"
+  children: "limbo"
   data: "components {\n"
   "  id: \"main\"\n"
   "  component: \"/main/main.script\"\n"
@@ -90,7 +132,7 @@ embedded_instances {
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"
-  "    z: -1125.0\n"
+  "    z: -1000.0\n"
   "  }\n"
   "  rotation {\n"
   "    x: 0.0\n"

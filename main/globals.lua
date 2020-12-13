@@ -12,5 +12,8 @@ SUITE = hash("SUITE")
 SYMBOL = hash("SYMBOL")
 actions = {
 	DRAW = hash("draw"),
-	DRAW_RESULT = hash("drawn card")
+	DRAW_RESULT = hash("drawn card"),
+	DROP_CARD = hash("drop card"),
+	RETRIEVE_ALL = hash("retrieve all"),
+	RETRIEVE_LAST = hash("retrieve last"),
 }

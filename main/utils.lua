@@ -1,3 +1,9 @@
+function tcount (tbl)
+	local count = 0
+	for _ in pairs(tbl) do count = count + 1 end
+	return count
+end
+
 function tprint (tbl, indent)
 	if not indent then indent = 0 end
 	local toprint = string.rep(" ", indent) .. "{\r\n"

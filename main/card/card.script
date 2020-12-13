@@ -24,12 +24,30 @@ local symbols = {
 }
 
 function init(self)
+	self.last_in = nil
 	go.set("#card_suite", "scale", vmath.vector3(1.35, 1.47, 1))
 	go.set("#card_symbol", "scale", vmath.vector3(0.7, 0.7, 1))
 	suite = (self.symbol == DOOR) and doors[self.suite] or suites[self.suite]
 	msg.post("#card_suite", "play_animation", {id = hash(suite)})
 	symbol = symbols[self.symbol]
-	if (symbol) then msg.post("#card_symbol", "play_animation", {id = hash(symbol)}) end
+	if (special_card(self)) then
+		msg.post("#card_symbol", "disable")
+	elseif (symbol) then 
+		msg.post("#card_symbol", "play_animation", {id = hash(symbol)}) 
+	end
+end
+
+function flip_card(self)
+	flip_rotation = go.get(".", "rotation")
+	flip_rotation[3] = (flip_rotation[3] + 180) % 360
+	go.set(".", "rotation", flip_rotation)
+end
+
+function special_card(self)
+	return (
+		self.symbol == DOOR
+		or self.suite == NIGHTMARE
+	)
 end
 
 function final(self)
@@ -39,9 +57,22 @@ function update(self, dt)
 	-- Nothing here
 end
 
+function what_are_you(self)
+	return {suite = self.suite, symbol = self.symbol}
+end
+
 function on_message(self, message_id, message, sender)
-	if not (message_id == hash("collision_response")) then
-		-- print(message_id, message	)
+	if (message_id == hash("entering")) then
+		self.last_in = sender
+	elseif (message_id == hash("leaving") and self.last_in == sender) then
+		self.last_in = nil
+	elseif (message_id == hash("what_are_you")) then
+		msg.post(sender, "i_am_a", what_are_you(self))
+	elseif (message_id == hash("released") and self.last_in) then
+		msg.post(self.last_in, "dropped", what_are_you(self))
+	elseif (message_id == hash("in_labyrinth")) then
+		msg.post("#collisionobject", "disable")
+	elseif not (message_id == hash("collision_response")) then
 	end
 end
 

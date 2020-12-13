@@ -1,4 +1,5 @@
 require("/main/globals")
+M = require("/main/mt")
 go.property("card_count", true)
 function init(self)
 	self.cards = {}
@@ -29,7 +30,7 @@ end
 function on_message(self, message_id, message, sender)
 	if (message_id == actions.DRAW) then
 		card = table.remove(self.cards, 1)
-		msg.post("onirim#main", "drawn card", card)
+		msg.post("onirim#main", actions.DRAW_RESULT, card)
 	end
 end
 
@@ -44,13 +45,18 @@ function initDeck(self)
 	for i = 1, self.counts[NIGHTMARE], 1 do
 		table.insert(self.cards, {SUITE = NIGHTMARE, SYMBOL = nil})
 	end
-	shuffleDeck(self)
+	for i = 1, 3 do
+		shuffleDeck(self)
+	end
 end
 
 function shuffleDeck(self)
-	for i = #self.cards, 2, -1 do
-		local j = math.random(i)
-		self.cards[i], self.cards[j] = self.cards[j], self.cards[i]
+	for number_shuffles = 0, 5 do
+		for i = #self.cards, 2, -1 do
+			--local j = math.random(i)
+			local j = M.random(i)
+			self.cards[i], self.cards[j] = self.cards[j], self.cards[i]
+		end
 	end
 end
 

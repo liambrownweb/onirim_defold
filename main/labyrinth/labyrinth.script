@@ -1,8 +1,7 @@
 require("/main/globals")
 function init(self)
-	-- Add initialization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	self.last_card_series = {}
+	print(go.get_world_position("."))
 end
 
 function final(self)
@@ -17,10 +16,49 @@ function update(self, dt)
 	-- Remove this function if not needed
 end
 
+function store_or_reject_card(self, card_details)
+	print("maybe storing")
+	if (self.last_card_series.symbol == card_details.symbol
+		or card_details.sy) then
+		print("No deal.")
+		msg.post(self.current_active_card, "leaving")
+		self.current_active_card = nil
+		return;
+	elseif (self.last_card_series.suite == card_details.suite) then
+		self.labyrinth_match = self.labyrinth_match + 1
+		if (self.labyrinth_match == 2) then
+			msg.post("/onirim", "unlock", {suite = card_details.suite})
+			self.labyrinth_match = 0
+		end
+	else
+		self.labyrinth_match = 0
+	end
+	msg.post(self.current_active_card, "in_labyrinth")
+	msg.post("/deck#deck", "draw")
+	self.last_card_series = {
+		previous_card = self.last_card_series,
+		suite = card_details.suite,
+		symbol = card_details.symbol,
+		id = self.current_active_card
+	}
+	self.current_active_card = nil
+end
+
 function on_message(self, message_id, message, sender)
-	--msg.post("#main", "message)
-	if not (message_id == hash("collision_response")) then
-		print(message_id, tprint(message, 2), sender)
+	if (message_id == hash("collision_response")) then
+		return
+	elseif (message_id == hash("i_am_a")) then
+	elseif (message_id == hash("dropped")) then
+		print("dropped")
+		store_or_reject_card(self, message)
+	elseif (message.enter) then
+		print("card entering")
+		self.current_active_card = message.other_id
+		msg.post(self.current_active_card, "entering")
+		msg.post(self.current_active_card, "what_are_you")
+	elseif (self.current_active_card) then
+		msg.post(self.current_active_card, "leaving")
+		self.current_active_card = nil
 	end
 end
 
