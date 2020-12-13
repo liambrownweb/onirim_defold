@@ -41,7 +41,7 @@ function on_message(self, message_id, message)
 		card_pos = go.get_position(card)
 		card_pos = card_pos + vmath.vector3(0,0,3)
 		go.set_position(card_pos, card)
-		if (tcount(self.hand) < 4 and (props.symbol == DOOR or props.suite == NIGHTMARE)) then
+		if (props.symbol == DOOR or (props.suite == NIGHTMARE and tcount(self.hand) < 4)) then
 			msg.post("/limbo", actions.DROP_CARD, {data = card})
 		else
 			table.insert(self.hand, card)

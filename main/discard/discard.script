@@ -1,7 +1,7 @@
+require("/main/globals")
+
 function init(self)
-	-- Add initialization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	self.current_active_card = nil
 end
 
 function final(self)
@@ -16,10 +16,27 @@ function update(self, dt)
 	-- Remove this function if not needed
 end
 
+function discard_card(self, data)
+	go.delete(self.current_active_card)
+	if (data.symbol == KEY) then
+		prophesy()
+	end
+end
+
 function on_message(self, message_id, message, sender)
-	-- Add message-handling code here
-	-- Learn more: https://defold.com/manuals/message-passing/
-	-- Remove this function if not needed
+	if (message_id == hash("collision_response")) then
+		return
+	elseif (message_id == hash("i_am_a")) then
+	elseif (message_id == actions.DROP_CARD) then
+		discard_card(self, message)
+	elseif (message.enter) then
+		self.current_active_card = message.other_id
+		msg.post(self.current_active_card, "entering")
+		msg.post(self.current_active_card, "what_are_you")
+	elseif (self.current_active_card) then
+		msg.post(self.current_active_card, "leaving")
+		self.current_active_card = nil
+	end
 end
 
 function on_input(self, action_id, action)

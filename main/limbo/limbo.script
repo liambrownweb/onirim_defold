@@ -21,6 +21,8 @@ end
 function on_message(self, message_id, message, sender)
 	if (message_id == actions.DROP_CARD) then
 		print(tprint(message))
+		print(go.get_position("."))
+		go.set_position(go.get_position(), message.data)
 	end
 end
 

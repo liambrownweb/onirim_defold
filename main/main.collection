@@ -63,8 +63,8 @@ instances {
   id: "limbo"
   prototype: "/main/limbo/limbo.go"
   position {
-    x: 0.0
-    y: 0.0
+    x: -944.0
+    y: -445.0
     z: 0.0
   }
   rotation {
@@ -83,9 +83,9 @@ instances {
   id: "discard"
   prototype: "/main/discard/discard.go"
   position {
-    x: 86.0
-    y: -170.0
-    z: -100.0
+    x: 571.0
+    y: -426.0
+    z: 0.0
   }
   rotation {
     x: 0.0
@@ -94,8 +94,8 @@ instances {
     w: 1.0
   }
   scale3 {
-    x: 0.5
-    y: 0.5
+    x: 0.25
+    y: 0.25
     z: 1.0
   }
 }

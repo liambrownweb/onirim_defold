@@ -33,7 +33,7 @@ function store_or_reject_card(self, card_details)
 	else
 		self.labyrinth_match = 0
 	end
-	msg.post(self.current_active_card, "in_labyrinth")
+	msg.post(self.current_active_card, actions.IN_LABYRINTH)
 	msg.post("/deck#deck", "draw")
 	self.last_card_series = {
 		previous_card = self.last_card_series,
@@ -48,7 +48,7 @@ function on_message(self, message_id, message, sender)
 	if (message_id == hash("collision_response")) then
 		return
 	elseif (message_id == hash("i_am_a")) then
-	elseif (message_id == hash("dropped")) then
+	elseif (message_id == actions.DROP_CARD) then
 		print("dropped")
 		store_or_reject_card(self, message)
 	elseif (message.enter) then

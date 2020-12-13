@@ -62,15 +62,15 @@ function what_are_you(self)
 end
 
 function on_message(self, message_id, message, sender)
-	if (message_id == hash("entering")) then
+	if (message_id == actions.ENTERING) then
 		self.last_in = sender
-	elseif (message_id == hash("leaving") and self.last_in == sender) then
+	elseif (message_id == actions.LEAVING and self.last_in == sender) then
 		self.last_in = nil
 	elseif (message_id == hash("what_are_you")) then
 		msg.post(sender, "i_am_a", what_are_you(self))
 	elseif (message_id == hash("released") and self.last_in) then
-		msg.post(self.last_in, "dropped", what_are_you(self))
-	elseif (message_id == hash("in_labyrinth")) then
+		msg.post(self.last_in, actions.DROP_CARD, what_are_you(self))
+	elseif (message_id == actions.IN_LABYRINTH) then
 		msg.post("#collisionobject", "disable")
 	elseif not (message_id == hash("collision_response")) then
 	end
