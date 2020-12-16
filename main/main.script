@@ -15,12 +15,19 @@ function init(self)
 	msg.post("@render:", "use_camera_projection") --Perspective camera
 	--msg.post("@render:", "use_fixed_fit_projection", { near = -100, far = 100 }) --2D ortho viewport
 	msg.post("/camera#main_board_camera", "acquire_camera_focus")
+	refresh_hand(self)
+end
+
+function draw_first_hand(self)
+	self.ignore_nightmares = true
 	refresh_deck(self)
 end
 
-function refresh_deck(self)
+function refresh_hand(self)
 	if (tcount(self.hand) < 5) then
 		msg.post("deck#deck", actions.DRAW)
+	else
+		self.ignore_nightmares = nil
 	end
 end
 
@@ -41,12 +48,12 @@ function on_message(self, message_id, message)
 		card_pos = go.get_position(card)
 		card_pos = card_pos + vmath.vector3(0,0,3)
 		go.set_position(card_pos, card)
-		if (props.symbol == DOOR or (props.suite == NIGHTMARE and tcount(self.hand) < 4)) then
+		if (props.symbol == DOOR or (props.suite == NIGHTMARE and self.ignore_nightmares)) then
 			msg.post("/limbo", actions.DROP_CARD, {data = card})
 		else
 			table.insert(self.hand, card)
 		end
 		msg.post(card, "ident")
-		refresh_deck(self)
+		refresh_hand(self)
 	end
 end

@@ -2,7 +2,7 @@
 title = Onirim
 version = 0
 publisher = Me
-dependencies = https://github.com/britzl/defold-input/archive/master.zip,https://github.com/subsoap/defos/archive/master.zip
+dependencies = https://github.com/britzl/defold-input/archive/master.zip,https://github.com/subsoap/defos/archive/master.zip,https://github.com/britzl/deftest/archive/master.zip
 
 [bootstrap]
 main_collection = /main/main.collectionc

@@ -2,6 +2,13 @@ require("/main/globals")
 
 function init(self)
 	self.current_active_card = nil
+	self.discarded = {
+		[AQUARIUM] = {[SUN] = 0, [MOON] = 0, [KEY] = 0},
+		[GARDEN] = {[SUN] = 0, [MOON] = 0, [KEY] = 0},
+		[LIBRARY] = {[SUN] = 0, [MOON] = 0, [KEY] = 0},
+		[OBSERVATORY] = {[SUN] = 0, [MOON] = 0, [KEY] = 0},
+		[NIGHTMARE] = 0,
+	}
 end
 
 function final(self)
@@ -17,6 +24,11 @@ function update(self, dt)
 end
 
 function discard_card(self, data)
+	if (data.suite == NIGHTMARE) then
+		self.discarded[NIGHTMARE] = self.discarded[NIGHTMARE] + 1
+	else
+		self.discarded[data.suite][data.symbol] = self.discarded[data.suite][data.symbol] + 1
+	end
 	go.delete(self.current_active_card)
 	if (data.symbol == KEY) then
 		prophesy()
@@ -27,6 +39,7 @@ function on_message(self, message_id, message, sender)
 	if (message_id == hash("collision_response")) then
 		return
 	elseif (message_id == hash("i_am_a")) then
+		self.current_active_card_props = message
 	elseif (message_id == actions.DROP_CARD) then
 		discard_card(self, message)
 	elseif (message.enter) then
@@ -55,4 +68,8 @@ function on_reload(self)
 	-- Add reload-handling code here
 	-- Learn more: https://defold.com/manuals/hot-reload/
 	-- Remove this function if not needed
+end
+
+function prophesy(self)
+	print("Prophesying!")
 end

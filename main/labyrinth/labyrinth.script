@@ -17,10 +17,8 @@ function update(self, dt)
 end
 
 function store_or_reject_card(self, card_details)
-	print("maybe storing")
 	if (self.last_card_series.symbol == card_details.symbol
-		or card_details.sy) then
-		print("No deal.")
+		or card_details.suite == NIGHTMARE) then
 		msg.post(self.current_active_card, "leaving")
 		self.current_active_card = nil
 		return;
@@ -34,7 +32,7 @@ function store_or_reject_card(self, card_details)
 		self.labyrinth_match = 0
 	end
 	msg.post(self.current_active_card, actions.IN_LABYRINTH)
-	msg.post("/deck#deck", "draw")
+	msg.post("/deck#deck", actions.DRAW, {sender= "/onirim#main"})
 	self.last_card_series = {
 		previous_card = self.last_card_series,
 		suite = card_details.suite,
@@ -49,10 +47,8 @@ function on_message(self, message_id, message, sender)
 		return
 	elseif (message_id == hash("i_am_a")) then
 	elseif (message_id == actions.DROP_CARD) then
-		print("dropped")
 		store_or_reject_card(self, message)
 	elseif (message.enter) then
-		print("card entering")
 		self.current_active_card = message.other_id
 		msg.post(self.current_active_card, "entering")
 		msg.post(self.current_active_card, "what_are_you")

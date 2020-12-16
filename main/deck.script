@@ -30,7 +30,7 @@ end
 function on_message(self, message_id, message, sender)
 	if (message_id == actions.DRAW) then
 		card = table.remove(self.cards, 1)
-		msg.post("onirim#main", actions.DRAW_RESULT, card)
+		msg.post(message.sender or sender, actions.DRAW_RESULT, card)
 	end
 end
 
@@ -58,18 +58,6 @@ function shuffleDeck(self)
 			self.cards[i], self.cards[j] = self.cards[j], self.cards[i]
 		end
 	end
-end
-
-function on_input(self, action_id, action)
-	-- Add input-handling code here. The game object this script is attached to
-	-- must have acquired input focus:
-	--
-	--    msg.post(".", "acquire_input_focus")
-	--
-	-- All mapped input bindings will be received. Mouse and touch input will
-	-- be received regardless of where on the screen it happened.
-	-- Learn more: https://defold.com/manuals/input/
-	-- Remove this function if not needed
 end
 
 function on_reload(self)

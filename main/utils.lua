@@ -4,6 +4,13 @@ function tcount (tbl)
 	return count
 end
 
+function is_numeric(x)
+	if tonumber(x) ~= nil then
+		return true
+	end
+	return false
+end
+
 function tprint (tbl, indent)
 	if not indent then indent = 0 end
 	local toprint = string.rep(" ", indent) .. "{\r\n"
