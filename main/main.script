@@ -1,4 +1,5 @@
 require("/main/globals")
+local rendercam = require "rendercam.rendercam"
 
 function init(self)
 	self.drawn_cards = {}
@@ -13,21 +14,31 @@ function init(self)
 	self.default_card_scale = 0.15
 	msg.post(".", "acquire_input_focus")
 	msg.post("@render:", "use_camera_projection") --Perspective camera
-	--msg.post("@render:", "use_fixed_fit_projection", { near = -100, far = 100 }) --2D ortho viewport
-	msg.post("/camera#main_board_camera", "acquire_camera_focus")
-	refresh_hand(self)
+	rendercam.activate_camera("/camera")
+	draw_first_hand(self)
 end
 
 function draw_first_hand(self)
-	self.ignore_nightmares = true
-	refresh_deck(self)
+	self.handle_nightmares = true
+	refresh_hand(self)
+	self.handle_nightmares = false
+end
+
+function handle_door(self, card_props)
+	msg.post("/limbo", actions.DROP_CARD, {data = card})
+end
+
+function handle_nightmare(self, card_props)
+	if (tcount(self.hand) < 4 or self.ignore_nightmares) then
+		msg.post("/limbo", actions.DROP_CARD, {data = card})
+	else
+		msg.post("/nightmare", actions.TRIGGER_NIGHTMAREWould )
+	end
 end
 
 function refresh_hand(self)
 	if (tcount(self.hand) < 5) then
 		msg.post("deck#deck", actions.DRAW)
-	else
-		self.ignore_nightmares = nil
 	end
 end
 
@@ -46,10 +57,16 @@ function on_message(self, message_id, message)
 		card = factory.create("/onirim#card_factory", self.center_point, nil, props, self.default_card_scale)
 		table.insert(self.drawn_cards, card)
 		card_pos = go.get_position(card)
-		card_pos = card_pos + vmath.vector3(0,0,3)
+		card_count = tcount(self.hand)
+		card_pos = card_pos + vmath.vector3(card_count * 50, card_count * 5, card_count * .1 - .5)
+		card_rotation = vmath.quat(0, 0.1, 0, 0)
 		go.set_position(card_pos, card)
-		if (props.symbol == DOOR or (props.suite == NIGHTMARE and self.ignore_nightmares)) then
-			msg.post("/limbo", actions.DROP_CARD, {data = card})
+		go.set_rotation(card_rotation, card)
+		print(tprint(props))
+		if (props.symbol == DOOR) then
+			handle_door(self, props)
+		elseif (props.suite == NIGHTMARE) then
+			handle_nightmare(self, props)
 		else
 			table.insert(self.hand, card)
 		end

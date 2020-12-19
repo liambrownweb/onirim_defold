@@ -38,13 +38,13 @@ embedded_components {
   type: "sprite"
   data: "tile_set: \"/main/cursor.atlas\"\n"
   "default_animation: \"default_cursor\"\n"
-  "material: \"/builtins/materials/sprite.material\"\n"
-  "blend_mode: BLEND_MODE_ALPHA\n"
+  "material: \"/render/pointer.material\"\n"
+  "blend_mode: BLEND_MODE_ADD\n"
   ""
   position {
     x: 15.0
     y: -15.0
-    z: 12.0
+    z: 0.0
   }
   rotation {
     x: 0.0
